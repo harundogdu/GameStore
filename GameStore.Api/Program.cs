@@ -49,12 +49,10 @@ List<GameDto> games = [
 ];
 
 // GET: Get all games
-app.MapGet("games",() => games);
+app.MapGet("games", () => games);
 
 // GET: Get a game by id
-app.MapGet("games/{id}", (int id) => {
-    return games.Find(item => item.Id == id);
-});
+app.MapGet("games/{id}", (int id) => games.Find(game => game.Id == id));
 
 // GET: Get Main page
 app.MapGet("/", () => "Hello from GameStore.Api");
