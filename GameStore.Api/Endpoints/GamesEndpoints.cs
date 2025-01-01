@@ -55,13 +55,14 @@ public static class GamesEndpoints
     ),
     ];
 
-    public static WebApplication MapGamesEndpoints(this WebApplication app)
+    public static RouteGroupBuilder MapGamesEndpoints(this WebApplication app)
     {
+        var group = app.MapGroup("games");
         // GET: Get all games
-        app.MapGet("games", () => Results.Ok(games)).WithName(GetGamesEndpointName);
+        group.MapGet("/", () => Results.Ok(games)).WithName(GetGamesEndpointName);
 
         // GET: Get a game by id
-        app.MapGet("games/{id}", (int id) =>
+        group.MapGet("/{id}", (int id) =>
         {
             var game = games.FirstOrDefault(game => game.Id == id);
             if (game is not null)
@@ -73,7 +74,7 @@ public static class GamesEndpoints
         }).WithName(GetGameEndpointName);
 
         // POST: Create a new game
-        app.MapPost("games", (CreateGameDto newGame) =>
+        group.MapPost("/", (CreateGameDto newGame) =>
         {
             GameDto game = new(
                games.Count + 1,
@@ -88,7 +89,7 @@ public static class GamesEndpoints
         }).WithName(PostGameEndpointName);
 
         // PUT: Update game by id
-        app.MapPut("games/{id}", (int id, UpdateGameDto updateGame) =>
+        group.MapPut("/{id}", (int id, UpdateGameDto updateGame) =>
         {
             var gameIndex = games.FindIndex(game => game.Id == id);
             if (gameIndex > -1)
@@ -108,15 +109,12 @@ public static class GamesEndpoints
         }).WithName(PutGameEndpointName);
 
         // DELETE: Delete a game by id
-        app.MapDelete("games/{id}", (int Id) =>
+        group.MapDelete("/{id}", (int Id) =>
         {
             games.RemoveAll(game => game.Id == Id);
             return Results.NoContent();
         }).WithName(DeleteGameEndpointName);
 
-        // GET: Get Main page
-        app.MapGet("/", () => "Hello from GameStore.Api").WithName(GetMainEndpointName);
-
-        return app;
+        return group;
     }
 }
