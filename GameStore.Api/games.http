@@ -5,4 +5,15 @@ GET http://localhost:5045
 GET http://localhost:5045/games
 
 ### Get game by id
-GET http://localhost:5045/games/2
+GET http://localhost:5045/games/7
+
+### Post new game
+POST http://localhost:5045/games
+Content-Type: application/json
+
+{
+  "name": "FIFA 2025",
+  "genre": "Sports",
+  "price": 49.99,
+  "releaseDate": "2025-10-01"
+}
