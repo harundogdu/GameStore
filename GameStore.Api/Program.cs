@@ -7,6 +7,8 @@ const string GetMainEndpointName = "GetMain";
 const string GetGameEndpointName = "GetGame";
 const string GetGamesEndpointName = "GetGames";
 const string PostGameEndpointName = "PostName";
+const string PutGameEndpointName = "PutGame";
+const string DeleteGameEndpointName = "DeleteGame";
 
 List<GameDto> games = [
     new(
@@ -54,21 +56,30 @@ List<GameDto> games = [
 ];
 
 // GET: Get all games
-app.MapGet("games", () => games).WithName(GetGamesEndpointName);
+app.MapGet("games", () => Results.Ok(games)).WithName(GetGamesEndpointName);
 
 // GET: Get a game by id
-app.MapGet("games/{id}", (int id) => games.Find(game => game.Id == id)).WithName(GetGameEndpointName);
+app.MapGet("games/{id}", (int id) =>
+{
+    var game = games.FirstOrDefault(game => game.Id == id);
+    if (game is not null)
+    {
+        return Results.Ok(game);
+    }
+
+    return Results.NotFound();
+}).WithName(GetGameEndpointName);
 
 // POST: Create a new game
 app.MapPost("games", (CreateGameDto newGame) =>
 {
     GameDto game = new(
-        games.Count + 1,
-        newGame.Name,
-        newGame.Genre,
-        newGame.Price,
-        newGame.ReleaseDate
-    );
+       games.Count + 1,
+       newGame.Name,
+       newGame.Genre,
+       newGame.Price,
+       newGame.ReleaseDate
+   );
 
     games.Add(game);
     return Results.CreatedAtRoute(GetGameEndpointName, new { id = game.Id }, game);
@@ -92,7 +103,14 @@ app.MapPut("games/{id}", (int id, UpdateGameDto updateGame) =>
     }
 
     return Results.NotFound();
-});
+}).WithName(PutGameEndpointName);
+
+// DELETE: Delete a game by id
+app.MapDelete("games/{id}", (int Id) =>
+{
+    games.RemoveAll(game => game.Id == Id);
+    return Results.NoContent();
+}).WithName(DeleteGameEndpointName);
 
 // GET: Get Main page
 app.MapGet("/", () => "Hello from GameStore.Api").WithName(GetMainEndpointName);
