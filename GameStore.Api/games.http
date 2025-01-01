@@ -1,5 +1,8 @@
+### Get main page
 GET http://localhost:5045
 
+### Get all games
 GET http://localhost:5045/games
 
+### Get game by id
 GET http://localhost:5045/games/2
