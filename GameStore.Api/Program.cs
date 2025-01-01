@@ -71,7 +71,7 @@ app.MapPost("games", (CreateGameDto newGame) =>
     );
 
     games.Add(game);
-    Results.CreatedAtRoute(GetGameEndpointName, new { id = game.Id }, game);
+    return Results.CreatedAtRoute(GetGameEndpointName, new { id = game.Id }, game);
 }).WithName(PostGameEndpointName);
 
 // GET: Get Main page
