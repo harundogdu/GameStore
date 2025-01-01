@@ -28,3 +28,6 @@ Content-Type: application/json
   "Price": 49.99,
   "ReleaseDate": "2025-10-01"
 }
+
+### Delete game by id
+DELETE http://localhost:5045/games/2
