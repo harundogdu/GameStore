@@ -1,11 +1,107 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net8.0": {
+      "Microsoft.OpenApi/1.4.3": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Microsoft.OpenApi.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.OpenApi.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "MinimalApis.Extensions/0.11.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.OpenApi": "1.4.3",
+          "MiniValidation": "0.8.0"
+        },
+        "compile": {
+          "lib/net7.0/MinimalApis.Extensions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net7.0/MinimalApis.Extensions.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
+      "MiniValidation/0.8.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/MiniValidation.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/MiniValidation.dll": {
+            "related": ".xml"
+          }
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Microsoft.OpenApi/1.4.3": {
+      "sha512": "rURwggB+QZYcSVbDr7HSdhw/FELvMlriW10OeOzjPT7pstefMo7IThhtNtDudxbXhW+lj0NfX72Ka5EDsG8x6w==",
+      "type": "package",
+      "path": "microsoft.openapi/1.4.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Microsoft.OpenApi.dll",
+        "lib/netstandard2.0/Microsoft.OpenApi.pdb",
+        "lib/netstandard2.0/Microsoft.OpenApi.xml",
+        "microsoft.openapi.1.4.3.nupkg.sha512",
+        "microsoft.openapi.nuspec"
+      ]
+    },
+    "MinimalApis.Extensions/0.11.0": {
+      "sha512": "H+T96ZIoK9nUwQvycG4py39jvp+4LjUV9YiFVdKOnrUdEwktWkKDpF6ccHIn1o9tXeCH+vmZYnlobZ/X8eG6ug==",
+      "type": "package",
+      "path": "minimalapis.extensions/0.11.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net6.0/MinimalApis.Extensions.dll",
+        "lib/net6.0/MinimalApis.Extensions.xml",
+        "lib/net7.0/MinimalApis.Extensions.dll",
+        "lib/net7.0/MinimalApis.Extensions.xml",
+        "minimalapis.extensions.0.11.0.nupkg.sha512",
+        "minimalapis.extensions.nuspec"
+      ]
+    },
+    "MiniValidation/0.8.0": {
+      "sha512": "OcYFgtI6yDoVaEtVAQQHvGHbI4TBJ9dRrPJEqtcHtJjoGtpS0pM0uTuNLJaO3txvq6TcYqus4LFMQv5/LZegtg==",
+      "type": "package",
+      "path": "minivalidation/0.8.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net6.0/MiniValidation.dll",
+        "lib/net6.0/MiniValidation.xml",
+        "lib/netstandard2.0/MiniValidation.dll",
+        "lib/netstandard2.0/MiniValidation.xml",
+        "minivalidation.0.8.0.nupkg.sha512",
+        "minivalidation.nuspec"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net8.0": [
+      "MinimalApis.Extensions >= 0.11.0"
+    ]
   },
   "packageFolders": {
     "/Users/harundogdu/.nuget/packages/": {}
@@ -48,6 +144,12 @@
     "frameworks": {
       "net8.0": {
         "targetAlias": "net8.0",
+        "dependencies": {
+          "MinimalApis.Extensions": {
+            "target": "Package",
+            "version": "[0.11.0, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",
