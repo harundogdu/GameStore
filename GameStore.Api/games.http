@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ### Update game by id
-PUT http://localhost:5045/games/1
+PUT http://localhost:5045/games/2
 Content-Type: application/json
 
 {
@@ -30,4 +30,4 @@ Content-Type: application/json
 }
 
 ### Delete game by id
-DELETE http://localhost:5045/games/1
+DELETE http://localhost:5045/games/2
