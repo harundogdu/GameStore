@@ -10,4 +10,6 @@ var application = builder.Build();
 
 application.MapGamesEndpoints();
 
+application.MigrateDb();
+
 application.Run();
