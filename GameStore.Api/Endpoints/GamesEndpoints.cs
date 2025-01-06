@@ -66,9 +66,9 @@ public static class GamesEndpoints
         group.MapGet("/", () => Results.Ok(games)).WithName(GetGamesEndpointName);
 
         // GET: Get a game by id
-        group.MapGet("/{id}", (int id) =>
+        group.MapGet("/{id}", (int id, GameStoreContext dbContext) =>
         {
-            var game = games.FirstOrDefault(game => game.Id == id);
+            var game = dbContext.Games.Find(id);
             if (game is not null)
             {
                 return Results.Ok(game);
