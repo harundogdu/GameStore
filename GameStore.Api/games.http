@@ -12,10 +12,10 @@ POST http://localhost:5045/games
 Content-Type: application/json
 
 {
-  "name": "FIFA 2025",
-  "genre": "Sports",
-  "price": 49.99,
-  "releaseDate": "2025-10-01"
+  "Name": "FIFA 2025",
+  "GenreId": 4,
+  "Price": 49.99,
+  "ReleaseDate": "2025-10-01"
 }
 
 ### Update game by id
@@ -30,4 +30,4 @@ Content-Type: application/json
 }
 
 ### Delete game by id
-DELETE http://localhost:5045/games/2
+DELETE http://localhost:5045/games/1
