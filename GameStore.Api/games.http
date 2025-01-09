@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ### Update game by id
-PUT http://localhost:5045/games/3
+PUT http://localhost:5045/games/4
 Content-Type: application/json
 
 {
