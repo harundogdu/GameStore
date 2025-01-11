@@ -65,11 +65,12 @@ public static class GamesEndpoints
         var group = app.MapGroup("games")
                         .WithParameterValidation();
         // GET: Get all games
-        group.MapGet("/", async (GameStoreContext dbContext) =>
-        {
-            var games = await dbContext.Games.AsNoTracking().ToListAsync();
-            return Results.Ok(games);
-        }).WithName(GetGamesEndpointName);
+        group.MapGet("/", (GameStoreContext dbContext) => dbContext.Games
+            .Include(game => game.Genre)
+            .Select(game => game.ToGameSummaryDto())
+            .AsNoTracking()
+            .ToListAsync())
+            .WithName(GetGamesEndpointName);
 
         // GET: Get a game by id
         group.MapGet("/{id}", (int id, GameStoreContext dbContext) =>
@@ -105,10 +106,7 @@ public static class GamesEndpoints
             var game = dbContext.Games.Find(Id);
             if (game is not null)
             {
-                game.Name = updateGame.Name;
-                game.Price = updateGame.Price;
-                game.ReleaseDate = updateGame.ReleaseDate;
-
+                dbContext.Entry(game).CurrentValues.SetValues(updateGame.ToEntity(Id));
                 dbContext.SaveChanges();
                 return Results.NoContent();
             }
