@@ -30,4 +30,4 @@ Content-Type: application/json
 }
 
 ### Delete game by id
-DELETE http://localhost:5045/games/4
+DELETE http://localhost:5045/games/3
