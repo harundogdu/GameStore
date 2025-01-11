@@ -125,7 +125,9 @@ public static class GamesEndpoints
                 dbContext.SaveChanges();
                 return Results.NoContent();
             }
-            return Results.NoContent();
+
+            return Results.NotFound();
+
         }).WithName(DeleteGameEndpointName);
 
         return group;
