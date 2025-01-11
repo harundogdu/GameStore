@@ -5,17 +5,17 @@ GET http://localhost:5045
 GET http://localhost:5045/games
 
 ### Get game by id
-GET http://localhost:5045/games/1
+GET http://localhost:5045/games/2
 
 ### Post new game
 POST http://localhost:5045/games
 Content-Type: application/json
 
 {
-  "Name": "FIFA 2025",
-  "GenreId": 4,
-  "Price": 49.99,
-  "ReleaseDate": "2025-10-01"
+  "Name": "Assassin's Creed Valhalla",
+  "GenreId": 3,
+  "Price": 39.99,
+  "ReleaseDate": "2020-11-10"
 }
 
 ### Update game by id
@@ -30,4 +30,4 @@ Content-Type: application/json
 }
 
 ### Delete game by id
-DELETE http://localhost:5045/games/3
+DELETE http://localhost:5045/games/8
