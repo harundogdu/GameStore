@@ -1,7 +1,9 @@
+using System.Data.Common;
 using GameStore.Api.Data;
 using GameStore.Api.Dtos;
 using GameStore.Api.Entities;
 using GameStore.Api.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Api.Endpoints;
 
@@ -13,7 +15,7 @@ public static class GamesEndpoints
     const string PostGameEndpointName = "PostName";
     const string PutGameEndpointName = "PutGame";
     const string DeleteGameEndpointName = "DeleteGame";
-    private static readonly List<GameDto> games = [
+    private static readonly List<GameSummaryDto> games = [
     new(
         1,
         "The Legend of Zelda: Breath of the Wild",
@@ -63,7 +65,11 @@ public static class GamesEndpoints
         var group = app.MapGroup("games")
                         .WithParameterValidation();
         // GET: Get all games
-        group.MapGet("/", () => Results.Ok(games)).WithName(GetGamesEndpointName);
+        group.MapGet("/", async (GameStoreContext dbContext) =>
+        {
+            var games = await dbContext.Games.AsNoTracking().ToListAsync();
+            return Results.Ok(games);
+        }).WithName(GetGamesEndpointName);
 
         // GET: Get a game by id
         group.MapGet("/{id}", (int id, GameStoreContext dbContext) =>
@@ -71,7 +77,7 @@ public static class GamesEndpoints
             var game = dbContext.Games.Find(id);
             if (game is not null)
             {
-                return Results.Ok(game);
+                return Results.Ok(game.ToGameDetailsDto());
             }
 
             return Results.NotFound();
@@ -81,7 +87,6 @@ public static class GamesEndpoints
         group.MapPost("/", (CreateGameDto newGame, GameStoreContext dbContext) =>
         {
             Game game = newGame.ToEntity();
-            game.Genre = dbContext.Genres.Find(newGame.GenreId);
 
             dbContext.Games.Add(game);
             dbContext.SaveChanges();
@@ -89,35 +94,39 @@ public static class GamesEndpoints
             return Results.CreatedAtRoute(
                 GetGameEndpointName,
                 new { id = game.Id },
-                game.ToDto()
+                game.ToGameDetailsDto()
                 );
 
         }).WithName(PostGameEndpointName);
 
         // PUT: Update game by id
-        group.MapPut("/{id}", (int id, UpdateGameDto updateGame) =>
+        group.MapPut("/{id}", (int Id, UpdateGameDto updateGame, GameStoreContext dbContext) =>
         {
-            var gameIndex = games.FindIndex(game => game.Id == id);
-            if (gameIndex > -1)
+            var game = dbContext.Games.Find(Id);
+            if (game is not null)
             {
-                games[gameIndex] = new GameDto(
-                    id,
-                    updateGame.Name,
-                    updateGame.Genre,
-                    updateGame.Price,
-                    updateGame.ReleaseDate
-                );
+                game.Name = updateGame.Name;
+                game.Price = updateGame.Price;
+                game.ReleaseDate = updateGame.ReleaseDate;
 
+                dbContext.SaveChanges();
                 return Results.NoContent();
             }
 
             return Results.NotFound();
+
         }).WithName(PutGameEndpointName);
 
         // DELETE: Delete a game by id
-        group.MapDelete("/{id}", (int Id) =>
+        group.MapDelete("/{id}", (int Id, GameStoreContext dbContext) =>
         {
-            games.RemoveAll(game => game.Id == Id);
+            var game = dbContext.Games.Find(Id);
+            if (game is not null)
+            {
+                dbContext.Games.Remove(game);
+                dbContext.SaveChanges();
+                return Results.NoContent();
+            }
             return Results.NoContent();
         }).WithName(DeleteGameEndpointName);
 
