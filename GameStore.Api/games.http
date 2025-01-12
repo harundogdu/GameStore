@@ -23,10 +23,10 @@ PUT http://localhost:5045/games/4
 Content-Type: application/json
 
 {
-  "Name": "FIFA 2025",
-  "Genre": "Sports",
-  "Price": 49.99,
-  "ReleaseDate": "2025-10-01"
+  "Name":  "Counter-Strike: Global Offensive",
+  "GenreId": 2,
+  "Price": 19.49,
+  "ReleaseDate": "2012-08-21"
 }
 
 ### Delete game by id
